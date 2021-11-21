@@ -25,7 +25,6 @@ class FILM:
         self.poster_preview = data['posterUrlPreview']
 
 
-
 class SEARCH:
     def __init__(self, data: dict):
         self.kp_id = data['filmId']
@@ -42,13 +41,11 @@ class SEARCH:
 
 
 class KP:
-    def __init__(self, token, secret=None):
+    def __init__(self, token):
         self.token = token
-        self.secret = secret
         self.headers = {"X-API-KEY": self.token}
         self.api_version = 'v2.1'
         self.API = 'https://kinopoiskapiunofficial.tech/api/' + self.api_version + '/'
-        self.secret_API = 'https://videocdn.tv/api/short'
         self.version = self.api_version + '.2-release'
         self.about = 'KinoPoiskAPI'
 
@@ -79,19 +76,6 @@ class KP:
                 request_json = json.loads(request.text)
                 request_json['data']['kp_rate'] = kp_rate
                 request_json['data']['imdb_rate'] = imdb_rate
-                try:
-                    if self.secret is not None:
-                        request_secret = requests.get(self.secret_API, params={
-                            "kinopoisk_id": film_id,
-                            "api_token": self.secret
-                        })
-                        print(1, request_secret.text)
-                        request_secret_json = json.loads(request_secret.text)
-                        request_json['data']['secret'] = request_secret_json
-                    else:
-                        request_json['data']['secret'] = {"result": False}
-                except (Exception, BaseException):
-                    request_json['data']['secret'] = {"result": False}
                 cache[str(film_id)] = request_json['data']
                 CACHE().write(cache)
                 return FILM(request_json['data'])
