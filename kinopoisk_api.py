@@ -24,20 +24,6 @@ class FILM:
         self.poster = data['posterUrl']
         self.poster_preview = data['posterUrlPreview']
 
-        try:
-            self.secret_url = 'https:/' + data['secret']['data'][0]['iframe_src']
-        except (TypeError, IndexError):
-            self.secret_url = None
-
-        secret_urls = {
-            "283290": 'https://t.me/BorutoSerial',
-            "1042757": 'https://t.me/BorutoSerial',
-            "893924": 'https://t.me/BorutoSerial',
-            "1043713": 'https://www.youtube.com/watch?v=qrwlk7_GF9g'
-        }
-
-        if str(data['filmId']) in secret_urls:
-            self.secret_url = secret_urls[str(data['filmId'])]
 
 
 class SEARCH:
